@@ -26,12 +26,12 @@
 typedef struct s_file_info
 {
 	int file_type;
-	int permissions;
+	char *permissions;
 	int num_links;
 	char *owner;
 	char *group;
-	long long size;
-	long long data_modif;
+	long int size;
+	long int c_time;
 	char *path;
 } t_file_info;
 
