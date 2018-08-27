@@ -23,10 +23,26 @@
 # include <pwd.h>
 # include <grp.h>
 
-typedef struct s_f_info
+typedef struct s_file_info
 {
+	int file_type;
+	int permissions;
+	int num_links;
+	char *owner;
+	char *group;
+	long long size;
+	long long data_modif;
+	char *path;
+} t_file_info;
 
-} t_f_info;
-
+typedef struct s_options
+{
+	int l;
+	int R;
+	int a;
+	int r;
+	int t;
+	char *path;
+} t_options;
 
 #endif
