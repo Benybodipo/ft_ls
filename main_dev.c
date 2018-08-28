@@ -78,16 +78,37 @@ void reset_options(t_options *opt)
 	opt->path = NULL;
 }
 
+void reset_file_info(t_file_info *info)
+{
+	info->file_type = 0;
+	info->permissions = NULL;
+	info->num_links = 0;
+	info->owner = NULL;
+	info->group = NULL;
+	info->size = 0;
+	info->c_time = 0;
+	info->path = NULL;
+}
+
 int get_file_type(struct stat inf)
 {
 	if (S_ISREG(inf.st_mode))
-		return (1);
+		return (45);
 	else if (S_ISDIR(inf.st_mode))
-		return (2);
+		return (100);
 	else if (S_ISLNK(inf.st_mode))
-		return (3);
+		return (108);
+	else if (S_ISBLK(inf.st_mode))
+		return (98);
+	else if (S_ISCHR(inf.st_mode))
+		return (99);
+	// else if (S_ISIFO(inf.st_mode))
+	// 	return (112);
+	else if (S_ISSOCK(inf.st_mode))
+		return (115);
 	return (0);
 }
+
 void get_user_group_name(struct stat inf, t_file_info *info)
 {
 	struct passwd *pwd;
@@ -115,6 +136,50 @@ char  *get_permission(int mode)
 	}
 	return (num);
 }
+char *permissions(int perm)
+{
+	if (perm == 1)
+		return ("r--");
+	else if (perm == 2)
+		return ("-w-");
+	else if (perm == 3)
+		return ("rw-");
+	else if (perm == 4)
+		return ("--x");
+	else if (perm == 5)
+		return ("r-x");
+	else if (perm == 6)
+		return ("-wx");
+	else if (perm == 7)
+		return ("rwx");
+	return ("---");
+}
+
+char *handle_permission(char *permission)
+{
+	int i;
+	char *perm;
+	char *str;
+
+	if (!(str = (char *)malloc(sizeof(char) * 12)))
+		return (NULL);
+	i = 1;
+	str[0] = '-';
+	while (*permission)
+	{
+		perm = permissions(*permission - '0');
+		while (*perm)
+		{
+			str[i] = *perm;
+			i++;
+			perm++;
+		}
+		permission++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
 void set_file_info(char *file_name, t_file_info *info)
 {
 	DIR *dir;
@@ -140,6 +205,7 @@ void set_file_info(char *file_name, t_file_info *info)
 		info->size = inf.st_size;
 	}
 }
+
 int main(int argc, char **argv)
 {
 	char *input;
@@ -159,6 +225,5 @@ int main(int argc, char **argv)
 			i++;
 		}
 	}
-
 	return (0);
 }
