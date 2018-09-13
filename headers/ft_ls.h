@@ -19,6 +19,7 @@
 # include <dirent.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+#include <sys/xattr.h>
 # include <time.h>
 # include <pwd.h>
 # include <grp.h>
@@ -31,8 +32,11 @@ typedef struct s_file_info
 	char *owner;
 	char *group;
 	long int size;
-	long int c_time;
+	long int m_time;
+	char *name;
 	char *path;
+	int xattr;
+	struct s_file_info *next;
 } t_file_info;
 
 typedef struct s_options
@@ -44,5 +48,15 @@ typedef struct s_options
 	int t;
 	char *path;
 } t_options;
+
+typedef struct s_folder_path
+{
+	char *path;
+	struct s_folder_path *next;
+} t_folder_path;
+
+int get_file_type(struct stat inf);
+void get_user_group_name(struct stat inf, t_file_info *info);
+char  *get_permission(int mode);
 
 #endif
