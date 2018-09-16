@@ -10,4 +10,30 @@
 #                                                                              #
 # **************************************************************************** #
 
+NAME = libftprintf.a
 
+FLAGS = -Wall -Wextra -Werror
+
+INC = -I includes/
+
+UTILS = ft_itoa_base.c ft_strcmp.c ft_strlen.c
+
+CORE =	
+
+COMP = $(addprefix ./core/, $(CORE)) $(addprefix ./utils/, $(UTILS))
+
+all: $(NAME)
+
+$(NAME):
+	@gcc $(FLAGS) -c $(COMP) $(INC)
+	@ar rc $(NAME) *.o
+	@ranlib $(NAME)
+clean:
+		@rm -fr *.o
+
+fclean: clean
+		@rm -fr $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./headers/ft_ls.h"
+#include "./includes/ft_ls.h"
 int has_xattr(char *path);
 
 /*========================
@@ -128,22 +128,10 @@ char		*padding_left(char *str, int width)
 	new[i] = '\0';
 	return (new);
 }
+
 /*========================
 	- LINKED LISTS
 ========================*/
-
-t_folder_path *create_path(char *path)
-{
-	t_folder_path *pth;
-	if (!(pth = (t_folder_path *)malloc(sizeof(t_folder_path))))
-	{
-		printf("Error creating a new node.\n");
-		exit(-1);
-	}
-	pth->path = path;
-	pth->next = NULL;
-	return (pth);
-}
 
 t_file_info *create(struct dirent *sd, char *path)
 {
@@ -166,6 +154,7 @@ t_file_info *create(struct dirent *sd, char *path)
 	info->num_links = inf.st_nlink;
 	info->size = inf.st_size;
 	info->xattr = has_xattr(path);
+	info->block_cnt = inf.st_blocks;
 	info->next = NULL;
 	return (info);
 }
@@ -175,23 +164,6 @@ void append(t_file_info **Head, struct dirent *sd, char *path)
 	t_file_info *current;
 	t_file_info *new;
 	new = create(sd, path);
-	if (*Head == NULL)
-		*Head = new;
-	else
-	{
-		current = *Head;
-		while (current->next != NULL)
-			current = current->next;
-		current->next = new;
-	}
-}
-
-void append_path(t_folder_path **Head, char *path)
-{
-	t_folder_path *current;
-	t_folder_path *new;
-
-	new = create_path(path);
 	if (*Head == NULL)
 		*Head = new;
 	else
@@ -235,7 +207,7 @@ void capture_input(char *input, t_options *opt)
 	option = (*input == '-') ? 1 : 0;
 	if (!option)
 		opt->path = input;
-	else
+	if (option && !opt->path)
 	{
 		input++;
 		while (*input)
@@ -294,6 +266,7 @@ void reset_file_info(t_file_info *info)
 	info->name = NULL;
 	info->path = NULL;
 	info->xattr = 0;
+	info->block_cnt = 0;
 }
 
 int get_file_type(struct stat inf)
@@ -344,23 +317,22 @@ char  *get_permission(int mode)
 }
 char *permissions(int perm)
 {
-	if (perm == 1)
+	if (perm == 4)
 		return ("r--");
 	else if (perm == 2)
 		return ("-w-");
-	else if (perm == 3)
+	else if (perm == 6)
 		return ("rw-");
-	else if (perm == 4)
+	else if (perm == 1)
 		return ("--x");
 	else if (perm == 5)
 		return ("r-x");
-	else if (perm == 6)
+	else if (perm == 3)
 		return ("-wx");
 	else if (perm == 7)
 		return ("rwx");
 	return ("---");
 }
-
 
 char *handle_permission(char *permission, char *path)
 {
@@ -384,12 +356,12 @@ char *handle_permission(char *permission, char *path)
 		}
 		permission++;
 	}
-	// if (S_ISUID & inf.st_mode)
-	// 	str[2] = str[2] == '-' ? 'S' : 's';
-	// if (S_ISGID & inf.st_mode)
-	// 	str[2] = str[2] == '-' ? 'S' : 's';
-	// if (S_ISVTX & inf.st_mode)
-	// 	str[8] = str[8] == '-' ? 'T' : 't';
+	if (S_ISUID & inf.st_mode)
+		str[2] = str[2] == '-' ? 'S' : 's';
+	if (S_ISGID & inf.st_mode)
+		str[2] = str[2] == '-' ? 'S' : 's';
+	if (S_ISVTX & inf.st_mode)
+		str[8] = str[8] == '-' ? 'T' : 't';
 	str[i] = '\0';
 	return (str);
 }
@@ -405,33 +377,37 @@ int get_int_len(long long num)
 	return (len);
 }
 
-int get_longest_num(t_file_info *Head)
+int get_longest_num(t_file_info *Head, int index)
 {
 	int len;
+	int i;
 
 	len = 0;
+	i = 0;
 	while (Head != NULL)
 	{
-		len = (len < get_int_len(Head->size)) ? get_int_len(Head->size) : len;
+		i = (index == 1) ? Head->size : Head->num_links;
+		len = (len < get_int_len(i)) ? get_int_len(i) : len;
 		Head = Head->next;
 	}
 	return (len);
 }
 
-
-void long_listing(t_file_info *current, int len, int xattr)
+void long_listing(t_file_info *current, int x, int y, int xattr)
 {
 	char *size;
+	char *links;
 	char pad;
 
-	size = padding_left(ft_itoa_base(current->size, 10), len);
+	size = padding_left(ft_itoa_base(current->size, 10), x);
+	links = padding_left(ft_itoa_base(current->num_links, 10), y);
 	printf("%c", current->file_type);
 	printf("%s", handle_permission(current->permissions, current->path));
 	if (xattr && current->xattr)
-		printf("%c ", '@');
+		printf("%c", '@');
 	if (xattr && !current->xattr)
-		printf("%c ", ' ');
-	printf("%i ", current->num_links);
+		printf("%c", ' ');
+	printf(" %s ", links);
 	printf("%s ", current->owner);
 	printf("%s ", current->group);
 	printf("%s ", size);
@@ -439,19 +415,18 @@ void long_listing(t_file_info *current, int len, int xattr)
 	printf("%s\n", current->name);
 }
 
-void traverse(t_file_info **Head, t_options opt)
+blkcnt_t get_block_cnt(t_file_info *current)
 {
-	t_file_info *tmp = *Head;
-	t_file_info *tmp2 = tmp;
-	int len = 0;
+	blkcnt_t cnt;
 
-	while (tmp != NULL)
+	cnt = 0;
+	while (current != NULL)
 	{
-		long_listing(tmp, get_longest_num(*Head), pad_for_xattr(*Head));
-		tmp = tmp->next;
+		cnt = cnt + current->block_cnt;
+		current = current->next;
 	}
+	return (cnt);
 }
-
 /*========================
 	- SORT LIST
 ========================*/
@@ -489,21 +464,6 @@ t_file_info *sort_by_ascii(t_file_info *info)
 	return (info);
 }
 
-// t_file_info *sort_by_size(t_file_info *info)
-// {
-// 	if (!info)
-// 		return (0);
-// 	if (info->next && (info->size < info->next->size))
-// 		info = ft_lstswap(info, info->next);
-// 	info->next = sort_by_size(info->next);
-// 	if (info->next && (info->size < info->next->size))
-// 	{
-// 		info = ft_lstswap(info, info->next);
-// 		info->next = sort_by_size(info->next);
-// 	}
-// 	return (info);
-// }
-
 t_file_info *sort_by_time(t_file_info *info)
 {
 	if (!info)
@@ -519,7 +479,7 @@ t_file_info *sort_by_time(t_file_info *info)
 	return (info);
 }
 
-int sort_list(t_file_info **Head, t_options opt)
+void sort_list(t_file_info **Head, t_options opt)
 {
 	*Head = sort_by_ascii(*Head);
 	if (opt.t)
@@ -530,11 +490,10 @@ int sort_list(t_file_info **Head, t_options opt)
 /*========================
 	- SET INFO
 ========================*/
-t_file_info *set_file_info(char *file_name)
+t_file_info *set_file_info(char *file_name, t_options opt)
 {
 	DIR *dir;
 	struct dirent *sd;
-	struct stat inf;
 	t_file_info *Head;
 	char *path;
 
@@ -548,12 +507,35 @@ t_file_info *set_file_info(char *file_name)
 	while ((sd = readdir(dir)) != NULL)
 	{
 		path = ft_str_append(file_name,ft_str_append("/", sd->d_name));
-		if (!ft_strcmp(sd->d_name, ".") && !ft_strcmp(sd->d_name, "..") && sd->d_name[0] != '.')
+		if (sd->d_name[0] != '.' && !opt.a)
+			append(&Head, sd, path);
+		else if ((sd->d_name[0] == '.' || sd->d_name[0] != '.') && opt.a)
 			append(&Head, sd, path);
 	}
 	if (dir)
 		closedir(dir);
 	return (Head);
+}
+
+void traverse(t_file_info **Head, t_options opt)
+{
+	t_file_info *tmp;
+	long long cnt;
+	int x;
+	int y;
+
+	cnt = 0;
+	tmp = *Head;
+	x = get_longest_num(*Head, 1);
+	y = get_longest_num(*Head, 2);
+	printf("total: %lli\n", get_block_cnt(*Head));
+	while (tmp != NULL)
+	{
+		sort_list(&tmp, opt);
+		cnt = cnt + tmp->block_cnt;
+		long_listing(tmp, x, y, pad_for_xattr(*Head));
+		tmp = tmp->next;
+	}
 }
 
 /*========================
@@ -573,7 +555,7 @@ int recursion(t_file_info *Head, t_options opt)
 			!ft_strcmp(current->name, ".."))
 		{
 			printf("PWD %s:\n", current->path);
-			tmp = set_file_info(current->path);
+			tmp = set_file_info(current->path, opt);
 			if (tmp)
 			{
 				traverse(&tmp, opt);
@@ -593,22 +575,21 @@ int main(int argc, char **argv)
 	t_options opt;
 	t_file_info *info;
 
+	reset_options(&opt);
 	if (argc > 1)
 	{
-		reset_options(&opt);
 		i = 1;
 		while (argv[i])
 		{
 			input = argv[i];
 			capture_input(input, &opt);
-			info = set_file_info(opt.path);
-			traverse(&info, opt);
-
-			printf("=== %s ===\n", "sort_by_time");
-			t_file_info *time = sort_by_time(info);
-			traverse(&time, opt);
 			i++;
 		}
+		opt.path = (!opt.path) ? "." : opt.path;
+		info = set_file_info(opt.path, opt);
 	}
+	else
+		info = set_file_info(".", opt);
+	traverse(&info, opt);
 	return (0);
 }

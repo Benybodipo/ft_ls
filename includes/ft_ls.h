@@ -36,6 +36,7 @@ typedef struct s_file_info
 	char *name;
 	char *path;
 	int xattr;
+	blkcnt_t block_cnt;
 	struct s_file_info *next;
 } t_file_info;
 
