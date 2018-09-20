@@ -3,22 +3,24 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: besteba <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: besteba <besteba@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/27 09:18:47 by besteba           #+#    #+#              #
-#    Updated: 2018/08/27 09:18:51 by besteba          ###   ########.fr        #
+#    Updated: 2018/09/20 13:03:38 by besteba          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftprintf.a
+NAME = libftls.a
 
 FLAGS = -Wall -Wextra -Werror
 
 INC = -I includes/
 
-UTILS = ft_itoa_base.c ft_strcmp.c ft_strlen.c
+UTILS = ft_itoa_base.c ft_putstr.c ft_strcmp.c get_int_len.c print_3params.c \
+		ft_putchar.c ft_str_append.c ft_strlen.c padding_left.c \
 
-CORE =	
+CORE = ft_ls.c handle_list.c sort.c getters.c handle_printing.c \
+		resetters.c handle_errors.c  helpers.c setters.c \
 
 COMP = $(addprefix ./core/, $(CORE)) $(addprefix ./utils/, $(UTILS))
 

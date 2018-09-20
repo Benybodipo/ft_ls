@@ -1,36 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   resetters.c                                        :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 12:27:36 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/18 09:55:06 by besteba          ###   ########.fr       */
+/*   Created: 2018/09/20 12:04:25 by besteba           #+#    #+#             */
+/*   Updated: 2018/09/20 12:07:06 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	reset_options(t_options *opt)
+void	ft_putstr(char *str)
 {
-	opt->l = 0;
-	opt->R = 0;
-	opt->a = 0;
-	opt->r = 0;
-	opt->t = 0;
-	opt->path = NULL;
-}
-
-void	reset_file_info(t_file_info *info)
-{
-	info->file_type = 0;
-	info->permissions = NULL;
-	info->num_links = 0;
-	info->owner = NULL;
-	info->group = NULL;
-	info->size = 0;
-	info->m_time = 0;
-	info->name = NULL;
-	info->path = NULL;
-	info->xattr = 0;
-	info->block_cnt = 0;
+	while (*str)
+	{
+		write(1, &(*str), 1);
+		str++;
+	}
 }

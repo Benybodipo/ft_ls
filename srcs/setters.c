@@ -6,17 +6,16 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:42:40 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 12:49:02 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/18 12:50:06 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-char *handle_permission(char *permission, char *path)
+char			*handle_permission(char *permission, char *path)
 {
-	int i;
-	char *perm;
-	char *str;
-	struct stat inf;
+	int				i;
+	char			*perm;
+	char			*str;
+	struct stat		inf;
 
 	stat(path, &inf);
 	if (!(str = (char *)malloc(sizeof(char) * 12)))
@@ -33,25 +32,19 @@ char *handle_permission(char *permission, char *path)
 		}
 		permission++;
 	}
-	if (S_ISUID & inf.st_mode)
-		str[2] = str[2] == '-' ? 'S' : 's';
-	if (S_ISGID & inf.st_mode)
-		str[2] = str[2] == '-' ? 'S' : 's';
-	if (S_ISVTX & inf.st_mode)
-		str[8] = str[8] == '-' ? 'T' : 't';
 	str[i] = '\0';
-	return (str);
+	return (handle_sticky_b(inf.st_mode, str));
 }
 
-t_file_info *set_file_info(char *file_name, t_options opt)
+t_file_info		*set_file_info(char *file_name, t_options opt)
 {
-	DIR *dir;
-	struct dirent *sd;
-	t_file_info *Head;
-	char *path;
+	DIR				*dir;
+	struct dirent	*sd;
+	t_file_info		*head;
+	char			*path;
 
 	dir = opendir(file_name);
-	Head = NULL;
+	head = NULL;
 	if (dir == NULL)
 	{
 		printf("%s\n", "Error! Unable to find the directory");
@@ -59,13 +52,13 @@ t_file_info *set_file_info(char *file_name, t_options opt)
 	}
 	while ((sd = readdir(dir)) != NULL)
 	{
-		path = ft_str_append(file_name,ft_str_append("/", sd->d_name));
+		path = ft_str_append(file_name, ft_str_append("/", sd->d_name));
 		if (sd->d_name[0] != '.' && !opt.a)
-			append(&Head, sd, path);
+			append(&head, sd, path);
 		else if ((sd->d_name[0] == '.' || sd->d_name[0] != '.') && opt.a)
-			append(&Head, sd, path);
+			append(&head, sd, path);
 	}
 	if (dir)
 		closedir(dir);
-	return (Head);
+	return (head);
 }

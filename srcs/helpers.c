@@ -6,28 +6,30 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:46:56 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 12:49:07 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/20 12:18:08 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int has_xattr(char *path)
+int		has_xattr(char *path)
 {
-	int boolean = (listxattr(path, NULL, 0, XATTR_NOFOLLOW) > 0) ? 1 : 0;
+	int boolean;
+
+	boolean = (listxattr(path, NULL, 0, XATTR_NOFOLLOW) > 0) ? 1 : 0;
 	return (boolean);
 }
 
-int pad_for_xattr(t_file_info *Head)
+int		pad_for_xattr(t_file_info *head)
 {
-	while (Head)
+	while (head)
 	{
-		if (Head->xattr)
+		if (head->xattr)
 			return (1);
-		Head = Head->next;
+		head = head->next;
 	}
 	return (0);
 }
 
-char *permissions(int perm)
+char	*permissions(int perm)
 {
 	if (perm == 4)
 		return ("r--");
@@ -44,4 +46,43 @@ char *permissions(int perm)
 	else if (perm == 7)
 		return ("rwx");
 	return ("---");
+}
+
+char	*handle_sticky_b(mode_t mode, char *str)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	tmp = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	while (str[i])
+	{
+		tmp[i] = str[i];
+		i++;
+	}
+	if (S_ISUID & mode)
+		tmp[2] = tmp[2] == '-' ? 'S' : 's';
+	if (S_ISGID & mode)
+		tmp[5] = tmp[5] == '-' ? 'S' : 's';
+	if (S_ISVTX & mode)
+		tmp[8] = tmp[8] == '-' ? 'T' : 't';
+	tmp[i] = '\0';
+	return (tmp);
+}
+
+void	print_format_time(char *str)
+{
+	char	*tmp;
+	char	format[16];
+	int		i;
+
+	tmp = str + 4;
+	i = 0;
+	while (i < 16)
+	{
+		format[i] = tmp[i];
+		i++;
+	}
+	format[i] = '\0';
+	ft_putstr(format);
 }

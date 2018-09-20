@@ -6,16 +6,16 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:32:48 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 12:32:52 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/18 12:55:09 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int get_int_len(long long num)
+int		get_int_len(long long num)
 {
 	int len;
 
 	len = 1;
-	while (num/=10)
+	while (num /= 10)
 		len++;
 	return (len);
 }

@@ -6,11 +6,11 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:33:29 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 12:39:06 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/20 12:29:17 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void capture_input(char *input, t_options *opt)
+void	capture_input(char *input, t_options *opt)
 {
 	int option;
 
@@ -37,18 +37,7 @@ void capture_input(char *input, t_options *opt)
 	}
 }
 
-
-void reset_options(t_options *opt)
-{
-	opt->l = 0;
-	opt->R = 0;
-	opt->a = 0;
-	opt->r = 0;
-	opt->t = 0;
-	opt->path = NULL;
-}
-
-int get_file_type(struct stat inf)
+int		get_file_type(struct stat inf)
 {
 	if (S_ISREG(inf.st_mode))
 		return (45);
@@ -60,28 +49,28 @@ int get_file_type(struct stat inf)
 		return (98);
 	else if (S_ISCHR(inf.st_mode))
 		return (99);
-	// else if (S_ISIFO(inf.st_mode))
-	// 	return (112);
+	else if (S_ISFIFO(inf.st_mode))
+		return (112);
 	else if (S_ISSOCK(inf.st_mode))
 		return (115);
 	return (0);
 }
 
-void get_user_group_name(struct stat inf, t_file_info *info)
+void	get_user_group_name(struct stat inf, t_file_info *info)
 {
-	struct passwd *pwd;
-	struct group *group;
+	struct passwd	*pwd;
+	struct group	*group;
 
 	pwd = getpwuid(inf.st_uid);
-	group =  getgrgid(inf.st_gid);
+	group = getgrgid(inf.st_gid);
 	info->owner = pwd->pw_name;
 	info->group = group->gr_name;
 }
 
-char  *get_permission(int mode)
+char	*get_permission(int mode)
 {
-	char *num;
-	int  i;
+	char	*num;
+	int		i;
 
 	num = ft_itoa_base(mode, 8);
 	i = 0;
@@ -95,23 +84,23 @@ char  *get_permission(int mode)
 	return (num);
 }
 
-int get_longest_num(t_file_info *Head, int index)
+int		get_longest_num(t_file_info *head, int index)
 {
 	int len;
 	int i;
 
 	len = 0;
 	i = 0;
-	while (Head != NULL)
+	while (head != NULL)
 	{
-		i = (index == 1) ? Head->size : Head->num_links;
+		i = (index == 1) ? head->size : head->num_links;
 		len = (len < get_int_len(i)) ? get_int_len(i) : len;
-		Head = Head->next;
+		head = head->next;
 	}
 	return (len);
 }
 
-blkcnt_t get_block_cnt(t_file_info *current)
+blkcnt_t	get_block_cnt(t_file_info *current)
 {
 	blkcnt_t cnt;
 

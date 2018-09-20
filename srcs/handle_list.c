@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: besteba <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:04:37 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 12:04:40 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/18 09:44:40 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-t_file_info *create(struct dirent *sd, char *path)
+t_file_info		*create(struct dirent *sd, char *path)
 {
 	t_file_info *info;
 	struct stat inf;
@@ -36,34 +36,36 @@ t_file_info *create(struct dirent *sd, char *path)
 	return (info);
 }
 
-void append(t_file_info **Head, struct dirent *sd, char *path)
+void			append(t_file_info **head, struct dirent *sd, char *path)
 {
 	t_file_info *current;
 	t_file_info *new;
+
 	new = create(sd, path);
-	if (*Head == NULL)
-		*Head = new;
+	if (*head == NULL)
+		*head = new;
 	else
 	{
-		current = *Head;
+		current = *head;
 		while (current->next != NULL)
 			current = current->next;
 		current->next = new;
 	}
 }
 
-void destroy(t_file_info **Head)
+void			destroy(t_file_info **head)
 {
-    t_file_info *current = *Head;
-    t_file_info *next;
+	t_file_info *current;
+	t_file_info *next;
 
-    while (current != NULL)
-    {
-       next = current->next;
-       free(current);
-       current = next;
-    }
-    *Head = NULL;
+	current = *head;
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	*head = NULL;
 }
 
 t_file_info		*ft_lstswap(t_file_info *info1, t_file_info *info2)
