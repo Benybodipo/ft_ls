@@ -6,7 +6,7 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/27 09:18:29 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/20 12:30:19 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/25 12:12:15 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,7 @@ char		*ft_str_append(char *base, char *to_append)
 	return (new);
 }
 
-int ft_strcmp(char *str1, char *str2)
-{
-	if (ft_strlen(str1) == ft_strlen(str2))
-	{
-		while (*str2 == *str2 && *str1 && *str2)
-		{
-			str1++;
-			str2++;
-		}
-		if (!*str1 && !*str2)
-			return (1);
-	}
-	return (0);
-}
-
-int		ft_strcmp2(const char *s1, const char *s2)
+int		ft_strcmp(const char *s1, const char *s2)
 {
 	unsigned	int		i;
 
@@ -147,7 +132,7 @@ char		*padding_left(char *str, int width)
 	- LINKED LISTS
 ========================*/
 
-t_file_info *create(struct dirent *sd, char *path)
+t_file_info *create(char *d_name, char *path)
 {
 	t_file_info *info;
 	struct stat inf;
@@ -162,7 +147,7 @@ t_file_info *create(struct dirent *sd, char *path)
 	get_user_group_name(inf, info);
 	info->permissions = get_permission(inf.st_mode);
 	info->file_type = get_file_type(inf);
-	info->name = sd->d_name;
+	info->name = d_name;
 	info->path = path;
 	info->m_time = inf.st_mtime;
 	info->num_links = inf.st_nlink;
@@ -173,11 +158,11 @@ t_file_info *create(struct dirent *sd, char *path)
 	return (info);
 }
 
-void append(t_file_info **Head, struct dirent *sd, char *path)
+void append(t_file_info **Head, char *d_name, char *path)
 {
 	t_file_info *current;
 	t_file_info *new;
-	new = create(sd, path);
+	new = create(d_name, path);
 	if (*Head == NULL)
 		*Head = new;
 	else
@@ -212,7 +197,37 @@ t_file_info		*ft_lstswap(t_file_info *info1, t_file_info *info2)
 /*========================
 	- GETTERS
 ========================*/
+char *char_to_str(int c)
+{
+	char *str;
 
+	str = malloc(sizeof(char)*2);
+	str[0] = c;
+	str[1] = '\0';
+	return (str);
+}
+
+void error_handler(int errno, char *name)
+{
+	char *tmp;
+
+	tmp = name;
+	if (errno == 1)
+	{
+		print_3params("ft_ls: ", tmp, ": No such file or directory\n");
+	}
+	else if (errno == 2)
+	{
+		print_3params("ft_ls: illegal option -- ", tmp, "\n");
+		ft_putstr("usage: ft_ls [-Ralrt] [file ...]\n");
+
+	}
+	else if (errno == 3)
+	{
+		ft_putstr("Unaccessible file/folder");
+	}
+	exit(1);
+}
 
 void capture_input(char *input, t_options *opt)
 {
@@ -229,13 +244,15 @@ void capture_input(char *input, t_options *opt)
 			if (*input == 'l')
 				opt->l = 1;
 			else if (*input == 'R')
-				opt->R = 1;
+				opt->rec = 1;
 			else if (*input == 'a')
 				opt->a = 1;
 			else if (*input == 'r')
 				opt->r = 1;
 			else if (*input == 't')
 				opt->t = 1;
+			else
+				error_handler(2, char_to_str(*input));
 			input++;
 		}
 	}
@@ -261,7 +278,7 @@ int pad_for_xattr(t_file_info *Head)
 void reset_options(t_options *opt)
 {
 	opt->l = 0;
-	opt->R = 0;
+	opt->rec = 0;
 	opt->a = 0;
 	opt->r = 0;
 	opt->t = 0;
@@ -507,10 +524,10 @@ t_file_info *sort_by_ascii(t_file_info *info)
 {
 	if (!info)
 		return (NULL);
-	if (info->next && ft_strcmp2(info->name, info->next->name) > 0)
+	if (info->next && ft_strcmp(info->name, info->next->name) > 0)
 		info = ft_lstswap(info, info->next);
 	info->next = sort_by_ascii(info->next);
-	if (info->next && ft_strcmp2(info->name, info->next->name) > 0)
+	if (info->next && ft_strcmp(info->name, info->next->name) > 0)
 	{
 		info = ft_lstswap(info, info->next);
 		info->next = sort_by_ascii(info->next);
@@ -550,24 +567,27 @@ t_file_info *set_file_info(char *file_name, t_options opt)
 	struct dirent *sd;
 	t_file_info *Head;
 	char *path;
+	struct stat buf;
 
-	dir = opendir(file_name);
 	Head = NULL;
-	if (dir == NULL)
+	if (stat(file_name, &buf) == -1)
+		error_handler(1, file_name);
+	if (S_ISREG(buf.st_mode))
+		append(&Head, file_name, file_name);
+	else
 	{
-		printf("%s\n", "Error! Unable to find the directory");
-		exit(1);
+		dir = opendir(file_name);
+		while ((sd = readdir(dir)) != NULL)
+		{
+			path = ft_str_append(file_name,ft_str_append("/", sd->d_name));
+			if (sd->d_name[0] != '.' && !opt.a)
+				append(&Head, sd->d_name, path);
+			else if ((sd->d_name[0] == '.' || sd->d_name[0] != '.') && opt.a)
+				append(&Head, sd->d_name, path);
+		}
+		if (dir)
+			closedir(dir);
 	}
-	while ((sd = readdir(dir)) != NULL)
-	{
-		path = ft_str_append(file_name,ft_str_append("/", sd->d_name));
-		if (sd->d_name[0] != '.' && !opt.a)
-			append(&Head, sd, path);
-		else if ((sd->d_name[0] == '.' || sd->d_name[0] != '.') && opt.a)
-			append(&Head, sd, path);
-	}
-	if (dir)
-		closedir(dir);
 	return (Head);
 }
 
@@ -610,8 +630,8 @@ int recursion(t_file_info *Head, t_options opt)
 	tmp = NULL;
 	while (current)
 	{
-		if (current->file_type == 'd' && !ft_strcmp(current->name, ".") &&
-			!ft_strcmp(current->name, ".."))
+		if (current->file_type == 'd' && ft_strcmp(current->name, ".") &&
+			ft_strcmp(current->name, ".."))
 		{
 			ft_putstr(current->path);
 			ft_putstr(": \n");
@@ -651,7 +671,7 @@ int main(int argc, char **argv)
 	else
 		info = set_file_info(".", opt);
 	traverse(&info, opt);
-	if (opt.R)
+	if (opt.rec)
 		recursion(info, opt);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:07:03 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/20 12:02:39 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/25 11:52:57 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		main(int argc, char **argv)
 	else
 		info = set_file_info(".", opt);
 	traverse(&info, opt);
-	if (opt.R)
+	if (opt.rec)
 		recursion(info, opt);
 	return (0);
 }

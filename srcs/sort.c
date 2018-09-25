@@ -6,7 +6,7 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:10:21 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 12:49:22 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/25 12:16:04 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ t_file_info *sort_by_ascii(t_file_info *info)
 {
 	if (!info)
 		return (NULL);
-	if (info->next && ft_strcmp2(info->name, info->next->name) > 0)
+	if (info->next && ft_strcmp(info->name, info->next->name) > 0)
 		info = ft_lstswap(info, info->next);
 	info->next = sort_by_ascii(info->next);
-	if (info->next && ft_strcmp2(info->name, info->next->name) > 0)
+	if (info->next && ft_strcmp(info->name, info->next->name) > 0)
 	{
 		info = ft_lstswap(info, info->next);
 		info->next = sort_by_ascii(info->next);

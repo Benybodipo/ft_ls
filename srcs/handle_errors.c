@@ -6,6 +6,27 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 09:35:25 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/18 09:35:31 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/25 12:05:00 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+void	error_handler(int errno, char *name)
+{
+	char *tmp;
+
+	tmp = name;
+	if (errno == 1)
+	{
+		print_3params("ft_ls: ", tmp, ": No such file or directory\n");
+	}
+	else if (errno == 2)
+	{
+		print_3params("ft_ls: illegal option -- ", tmp, "\n");
+		ft_putstr("usage: ft_ls [-Ralrt] [file ...]\n");
+	}
+	else if (errno == 3)
+	{
+		ft_putstr("Unaccessible file/folder");
+	}
+	exit(1);
+}

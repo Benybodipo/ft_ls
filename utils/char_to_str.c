@@ -1,36 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   resetters.c                                        :+:      :+:    :+:   */
+/*   char_to_str.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 12:27:36 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/25 11:49:23 by besteba          ###   ########.fr       */
+/*   Created: 2018/09/25 11:53:58 by besteba           #+#    #+#             */
+/*   Updated: 2018/09/25 11:54:02 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	reset_options(t_options *opt)
+char *char_to_str(int c)
 {
-	opt->l = 0;
-	opt->rec = 0;
-	opt->a = 0;
-	opt->r = 0;
-	opt->t = 0;
-	opt->path = NULL;
-}
+	char *str;
 
-void	reset_file_info(t_file_info *info)
-{
-	info->file_type = 0;
-	info->permissions = NULL;
-	info->num_links = 0;
-	info->owner = NULL;
-	info->group = NULL;
-	info->size = 0;
-	info->m_time = 0;
-	info->name = NULL;
-	info->path = NULL;
-	info->xattr = 0;
-	info->block_cnt = 0;
+	str = malloc(sizeof(char)*2);
+	str[0] = c;
+	str[1] = '\0';
+	return (str);
 }

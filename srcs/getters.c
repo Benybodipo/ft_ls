@@ -6,7 +6,7 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:33:29 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/20 12:29:17 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/25 11:54:53 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ void	capture_input(char *input, t_options *opt)
 			if (*input == 'l')
 				opt->l = 1;
 			else if (*input == 'R')
-				opt->R = 1;
+				opt->rec = 1;
 			else if (*input == 'a')
 				opt->a = 1;
 			else if (*input == 'r')
 				opt->r = 1;
 			else if (*input == 't')
 				opt->t = 1;
+			else
+				error_handler(2, char_to_str(*input));
 			input++;
 		}
 	}

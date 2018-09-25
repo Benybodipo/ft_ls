@@ -6,7 +6,7 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:16:10 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/20 12:00:48 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/25 12:15:02 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int		recursion(t_file_info *head, t_options opt)
 	tmp = NULL;
 	while (current)
 	{
-		if (current->file_type == 'd' && !ft_strcmp(current->name, ".") &&
-			!ft_strcmp(current->name, ".."))
+		if (current->file_type == 'd' && ft_strcmp(current->name, ".") &&
+			ft_strcmp(current->name, ".."))
 		{
 			ft_putstr(current->path);
 			ft_putstr(": \n");

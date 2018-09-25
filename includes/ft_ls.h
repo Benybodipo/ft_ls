@@ -6,7 +6,7 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/27 09:19:08 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/20 12:55:28 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/25 12:12:22 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct			s_file_info
 typedef struct			s_options
 {
 	int					l;
-	int					R;
+	int					rec;
 	int					a;
 	int					r;
 	int					t;
@@ -60,6 +60,7 @@ size_t					ft_strlen(const char *str);
 int						get_int_len(long long num);
 char					*padding_left(char *str, int width);
 void					print_3params(char *par1, char *par2, char *par3);
+char					*char_to_str(int c);
 
 void					capture_input(char *input, t_options *opt);
 int						get_file_type(struct stat inf);
@@ -67,9 +68,8 @@ void					get_user_group_name(struct stat inf, t_file_info *info);
 char					*get_permission(int mode);
 int						get_longest_num(t_file_info *head, int index);
 blkcnt_t				get_block_cnt(t_file_info *current);
-t_file_info				*create(struct dirent *sd, char *path);
-void					append(t_file_info **head, struct dirent *sd,
-							char *path);
+t_file_info				*create(char *d_name, char *path);
+void					append(t_file_info **head, char *d_name, char *path);
 void					destroy(t_file_info **head);
 t_file_info				*ft_lstswap(t_file_info *info1, t_file_info *info2);
 void					long_listing(t_file_info *current, int x, int y,
@@ -89,5 +89,6 @@ t_file_info				*reverse_order(t_file_info *info);
 t_file_info				*sort_by_ascii(t_file_info *info);
 t_file_info				*sort_by_time(t_file_info *info);
 void					sort_list(t_file_info **head, t_options opt);
+void					error_handler(int errno, char *name);
 
 #endif
