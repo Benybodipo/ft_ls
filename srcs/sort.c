@@ -6,11 +6,13 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:10:21 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/25 12:16:04 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:27:38 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-t_file_info *reverse_order(t_file_info *info)
+#include "ft_ls.h"
+
+t_file_info		*reverse_order(t_file_info *info)
 {
 	t_file_info *x;
 	t_file_info *y;
@@ -29,7 +31,7 @@ t_file_info *reverse_order(t_file_info *info)
 	return (x);
 }
 
-t_file_info *sort_by_ascii(t_file_info *info)
+t_file_info		*sort_by_ascii(t_file_info *info)
 {
 	if (!info)
 		return (NULL);
@@ -44,7 +46,7 @@ t_file_info *sort_by_ascii(t_file_info *info)
 	return (info);
 }
 
-t_file_info *sort_by_time(t_file_info *info)
+t_file_info		*sort_by_time(t_file_info *info)
 {
 	if (!info)
 		return (0);
@@ -59,11 +61,11 @@ t_file_info *sort_by_time(t_file_info *info)
 	return (info);
 }
 
-void sort_list(t_file_info **Head, t_options opt)
+void			sort_list(t_file_info **head, t_options opt)
 {
-	*Head = sort_by_ascii(*Head);
+	*head = sort_by_ascii(*head);
 	if (opt.t)
-		*Head = sort_by_time(*Head);
+		*head = sort_by_time(*head);
 	if (opt.r)
-		*Head = reverse_order(*Head);
+		*head = reverse_order(*head);
 }

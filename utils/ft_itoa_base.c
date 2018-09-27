@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: besteba <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 11:57:59 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 11:59:05 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:28:03 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 char	*ft_itoa_base(intmax_t num, int base)
 {

@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: besteba <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:00:50 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 12:00:51 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:28:21 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 int		ft_strcmp(const char *s1, const char *s2)
 {

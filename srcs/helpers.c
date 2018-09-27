@@ -6,9 +6,11 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:46:56 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/20 12:18:08 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:27:15 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 int		has_xattr(char *path)
 {

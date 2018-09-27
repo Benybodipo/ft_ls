@@ -6,9 +6,11 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:33:29 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/25 11:54:53 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:26:53 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 void	capture_input(char *input, t_options *opt)
 {
@@ -100,17 +102,4 @@ int		get_longest_num(t_file_info *head, int index)
 		head = head->next;
 	}
 	return (len);
-}
-
-blkcnt_t	get_block_cnt(t_file_info *current)
-{
-	blkcnt_t cnt;
-
-	cnt = 0;
-	while (current != NULL)
-	{
-		cnt = cnt + current->block_cnt;
-		current = current->next;
-	}
-	return (cnt);
 }

@@ -6,9 +6,11 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 12:11:43 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/20 12:13:14 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:28:42 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 void	print_3params(char *par1, char *par2, char *par3)
 {

@@ -6,9 +6,11 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 09:35:25 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/25 12:05:00 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:27:00 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 void	error_handler(int errno, char *name)
 {

@@ -6,9 +6,11 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 12:07:40 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/20 12:08:12 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:28:08 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 void	ft_putchar(int chr)
 {

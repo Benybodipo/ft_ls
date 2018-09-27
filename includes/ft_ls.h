@@ -6,7 +6,7 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/27 09:19:08 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/25 12:12:22 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/26 11:53:09 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,7 @@ t_file_info				*sort_by_ascii(t_file_info *info);
 t_file_info				*sort_by_time(t_file_info *info);
 void					sort_list(t_file_info **head, t_options opt);
 void					error_handler(int errno, char *name);
+void					get_folder_content(char *file_name, char *d_name,
+							int opt_a, t_file_info **head);
 
 #endif

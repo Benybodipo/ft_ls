@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_str_append.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: besteba <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 11:59:33 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 11:59:35 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:28:17 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 char		*ft_str_append(char *base, char *to_append)
 {

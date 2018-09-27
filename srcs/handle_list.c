@@ -6,9 +6,11 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:04:37 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/25 11:57:18 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:27:05 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 t_file_info		*create(char *d_name, char *path)
 {
@@ -36,7 +38,7 @@ t_file_info		*create(char *d_name, char *path)
 	return (info);
 }
 
-void			append(t_file_info **Head, char *d_name, char *path)
+void			append(t_file_info **head, char *d_name, char *path)
 {
 	t_file_info *current;
 	t_file_info *new;

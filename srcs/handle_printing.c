@@ -6,15 +6,16 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:16:10 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/25 12:15:02 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:27:10 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 void	long_listing(t_file_info *current, int x, int y, int xattr)
 {
 	char	*size;
 	char	*links;
-	char	pad;
 
 	size = padding_left(ft_itoa_base(current->size, 10), x);
 	links = padding_left(ft_itoa_base(current->num_links, 10), y);
@@ -36,7 +37,6 @@ int		recursion(t_file_info *head, t_options opt)
 {
 	t_file_info *current;
 	t_file_info *tmp;
-	struct stat inf;
 
 	current = head;
 	tmp = NULL;
@@ -79,7 +79,7 @@ void	traverse(t_file_info **head, t_options opt)
 		if (opt.l)
 			long_listing(tmp, x, y, pad_for_xattr(*head));
 		else
-			print_3params(tmp->name, " ", "\0");
+			print_3params(tmp->name, "\n", "\0");
 		tmp = tmp->next;
 	}
 	ft_putstr("\n");

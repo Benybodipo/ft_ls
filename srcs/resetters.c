@@ -6,9 +6,11 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:27:36 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/25 11:49:23 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:27:25 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 void	reset_options(t_options *opt)
 {

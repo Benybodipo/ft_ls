@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: besteba <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 12:01:49 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/17 12:01:50 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:28:25 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 size_t	ft_strlen(const char *str)
 {

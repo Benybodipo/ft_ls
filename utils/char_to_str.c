@@ -6,15 +6,17 @@
 /*   By: besteba <besteba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 11:53:58 by besteba           #+#    #+#             */
-/*   Updated: 2018/09/25 11:54:02 by besteba          ###   ########.fr       */
+/*   Updated: 2018/09/27 12:27:58 by besteba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char *char_to_str(int c)
+#include "ft_ls.h"
+
+char	*char_to_str(int c)
 {
 	char *str;
 
-	str = malloc(sizeof(char)*2);
+	str = malloc(sizeof(char) * 2);
 	str[0] = c;
 	str[1] = '\0';
 	return (str);
